@@ -18,8 +18,8 @@ from . import auth_bp
 def login():
     form = LoginForm() # Instancia del formulario de login
     if form.validate_on_submit():   # Si el formulario ha sido enviado, comenzamos con la logica de login
-        user = Users.query.filter_by(username=form.username.data).first
-        if user and Users.check_password(form.password.data):
+        user = Users.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
             login_user(user)
             flash('Inicio de sesión exitoso.')
             return redirect(url_for('main.index'))
@@ -28,7 +28,7 @@ def login():
 
     return render_template('login.html', form=form)     # si el formulario no ha sido enviado el usuario es redirigido al login
 
-@auth_bp.register('/register', methods=['GET', 'POST'])
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()   # Instancia del formulario de registro
     if form.validate_on_submit():   # Si el formulario se ha enviado, procedemos al registro del usuarios
@@ -36,13 +36,19 @@ def register():
             flash('Las contraseñas no coinciden')
             return redirect(url_for('auth.register'))
         password_hashed = generate_password_hash(form.password.data)
-        user = Users(
+        user = Users(                               # instancia del objeto user para guardarlo en la base de datos
             username= form.username.data,
             email = form.email.data,
-            password = password_hashed,
+            password_hash = password_hashed,
             rol = form.rol.data
         )
         db.session.add(user)
+        db.session.commit()
+        user_rol = UserRoles(           # instancia del objeto user_rol para guardarlo en la base de datos
+            user_id= user.id,
+            role_id = user.rol      # tengo que arreglar esto, aca se debe guardar el id de rol, no el rol
+        )
+        db.session.add(user_rol)
         db.session.commit()
         flash('Cuenta creada existosamente')
         return redirect(url_for('auth.login'))
@@ -52,4 +58,6 @@ def register():
 @auth_bp.route('/logout')
 @login_required
 def logout():
-    pass
+    logout_user()
+    flash('Haz salido de tu cuentas')
+    return redirect(url_for('auth.login'))
