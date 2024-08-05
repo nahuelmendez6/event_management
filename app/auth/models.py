@@ -37,4 +37,4 @@ class UserRoles(db.Model):
     __tablename__ = 'user_roles'
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True ,nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), primary_key=True, nullable=False)
+    user_rol = db.Column(db.String(10), nullable=False)

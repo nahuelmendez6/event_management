@@ -30,6 +30,21 @@ nav ul li a {
     font-size: 1.2em;
 }
 
+nav ul li  {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+nav ul .username{
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    position:absolute;
+    left:0;
+}
+
+
 nav ul li a:hover {
     text-decoration: underline;
 }

@@ -46,7 +46,7 @@ def register():
         db.session.commit()
         user_rol = UserRoles(           # instancia del objeto user_rol para guardarlo en la base de datos
             user_id= user.id,
-            role_id = user.rol      # tengo que arreglar esto, aca se debe guardar el id de rol, no el rol
+            user_rol = user.rol    # tengo que arreglar esto, aca se debe guardar el id de rol, no el rol
         )
         db.session.add(user_rol)
         db.session.commit()
