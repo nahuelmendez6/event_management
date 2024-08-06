@@ -4,6 +4,7 @@ from .extensions import db, migrate, login_manager
 #from .routes import register_blueprints
 from app.auth import auth_bp
 from app.main import main_blueprint
+from app.main import event_blueprint
 from .auth.models import Users
 def create_app():
     app = Flask(__name__)
@@ -23,5 +24,6 @@ def create_app():
     #register_blueprints(app)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(event_blueprint, url_prefix='/events')
 
     return app
