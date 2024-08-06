@@ -1,18 +1,26 @@
 <!-- app/auth/templates/login.html -->
 {% extends "base.html" %}
 {% block content %}
-<h2>Hola mundo</h2>
-{% if current_user.rol == 'admin' %}
-    <div class="events-list">
+<h2>Panel de control</h2>
+{% if current_user.is_authenticated %}
+    {% if current_user.rol == 'admin' %}
+        <section class="dashboard">
 
-    </div>
-    <div class="add-event">
-        <a href="{{ url_for('event.new_event') }}">Agregar evento</a>
-    </div>
+        </section>
+        <div class="grid-events">
+            <div class="add-event">
+                <a href="{{ url_for('event.new_event') }}">Agregar evento</a>
+            </div>
+            <div class="events-list">
+                <a href="{{ url_for('event.user_events') }}">Mis eventos</a>
+            </div>
+        </div>
+
+    {% else %}
+        <p>no funciono, gil</p>
+    {% endif %}
 {% else %}
-    <p>no funciono, gil</p>
+    <p>Inicia sesión ingresando <a href="{{ url_for('auth.login') }}">aquí</a></p>
+    <p>¿Aún no tienes cuenta? <a href="{{ url_for('auth.register') }}">¡Regístrate!</a></p>
 {% endif %}
-<section class="dashboard">
-
-</section>
 {% endblock %}

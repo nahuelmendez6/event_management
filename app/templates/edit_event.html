@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Editar Evento</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.title.label }} {{ form.title(size=32) }}
+        {% for error in form.title.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.start_time.label }} {{ form.start_time }}
+        {% for error in form.start_time.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.end_time.label }} {{ form.end_time }}
+        {% for error in form.end_time.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.description.label }} {{ form.description }}
+        {% for error in form.description.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.location.label }} {{ form.location }}
+        {% for error in form.location.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}

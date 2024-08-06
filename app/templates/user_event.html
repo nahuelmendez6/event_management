@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Eventos de {{ current_user.username }}</h1>
+    <ul>
+        {% for event in events %}
+            <li>
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>Inicio: {{ event.start_time }}</p>
+                <p>Fin: {{ event.end_time }}</p>
+                <p>Ubicación: {{ event.location }}</p>
+                <form action="{{ url_for('event.edit_event', event_id=event.id)}}" method="post">
+                    <input type="submit" value="Editar">
+                </form>
+                <form action="{{ url_for('event.delete_event', event_id=event.id)}}" method="post">
+                    <input type="submit" value="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este evento?');">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
