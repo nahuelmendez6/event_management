@@ -26,6 +26,7 @@ def new_event():
     if form.validate_on_submit():
         newEvent = Event(
             title = form.title.data,
+            category = form.category.data,
             start_time = form.start_time.data,
             end_time = form.end_time.data,
             description = form.description.data,
@@ -73,6 +74,7 @@ def edit_event(event_id):
     if form.validate_on_submit():
         event.update_event(
             title=form.title.data,
+            category=form.category.data,
             start_time=form.start_time.data,
             end_time=form.end_time.data,
             description=form.description.data,

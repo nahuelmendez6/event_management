@@ -10,6 +10,12 @@
         {% endfor %}
     </div>
     <div>
+        {{ form.category.label }} {{ form.category }}
+        {% for error in form.category.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
         {{ form.start_time.label }} {{ form.start_time }}
         {% for error in form.start_time.errors %}
             <span>{{ error }}</span>
