@@ -1,4 +1,5 @@
 from app.extensions import db
+from app.auth.models import Users
 from datetime import date, datetime
 
 """
@@ -48,11 +49,38 @@ class Event(db.Model):
             self.location = location
         db.session.commit()
 
+    @classmethod
+    def get_all_categories(cls):
+        return db.session.query(cls.category).distinct().all()
 
 class EventRegistration(db.Model):
-    pass
 
+    __tablename__ = 'event_registration'
 
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    user = db.relationship('Users', backref=db.backref('event_registration', lazy=True))
+    event = db.relationship('Event', backref=db.backref('event_registration', lazy=True))
+
+    @staticmethod
+    def check_registration(user_id, event_id):
+
+        # Busca si existe una inscripcion con user_idy event_id proporcionados
+        registration = db.session.query(EventRegistration).filter_by(user_id=user_id, event_id=event_id).first()
+
+        return registration is not None
+
+    def delete_registration(self, user_id,event_id):
+        registration = EventRegistration.query.filter_by(user_id=user_id, event_id=event_id).first()
+
+        if registration:
+            db.session.delete(registration)
+            db.session.commit()
+            return True
+        return False
 
 
 class Coment(db.Model):

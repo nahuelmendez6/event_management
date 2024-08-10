@@ -1,7 +1,7 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from app.main import main_blueprint, event_blueprint
 from flask_login import login_required, current_user
-from .models import Event, Coment
+from .models import Event, Coment, EventRegistration
 from .forms import CreateEvent, WriteComment, EditEvent
 from flask_login import current_user
 from app.extensions import db
@@ -9,7 +9,20 @@ from app.extensions import db
 
 @main_blueprint.route('/')
 def index():
-    return render_template('index.html')
+
+    # Obtener todas las categorias para usarlas en el formulario de filtrado
+    categories = Event.get_all_categories()
+
+    # Obtener la categoria seleccionada desde los parametros de la URL
+    category = request.args.get('category')
+
+    # si se ha seleccionado una categoria, filtrar por ella
+    if category:
+        events = Event.query.filter_by(category=category).order_by(Event.start_time.asc()).all()
+    else:
+        events = Event.query.order_by(Event.start_time.asc()).limit(10).all()
+
+    return render_template('index.html', events=events, categories=categories, selected_category=category)
 
 
 @event_blueprint.route('/create_event')
@@ -83,3 +96,44 @@ def edit_event(event_id):
         flash('El evento ha sido actualizado con éxito.', 'succes')
         return redirect(url_for('event.user_events'))
     return render_template('edit_event.html', form=form)
+
+@event_blueprint.route('/event_detail/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def show_detail(event_id):
+
+    event = Event.query.get_or_404(event_id)
+    if event:
+        return render_template('event_detail.html', event=event)
+
+@event_blueprint.route('/event_registration/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def registration(event_id):
+
+    event = Event.query.get_or_404(event_id)
+
+    if EventRegistration.check_registration(current_user.id, event.id):
+        flash('Ya estas inscripto en este evento.', 'warning')
+    else:
+        new_registration = EventRegistration(
+            user_id=current_user.id,
+            event_id=event.id
+        )
+        db.session.add(new_registration)
+        db.session.commit()
+        flash('Te has inscrito en el evento con éxito.', 'success')
+        return redirect(url_for('main.index'))
+
+    return  redirect(url_for('main.index'))
+
+@event_blueprint.route('/event_cancel_registration/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def cancel_registration(event_id):
+
+    event = Event.query.get_or_404(event_id)
+
+    if EventRegistration.check_registration(current_user.id, event.id):
+        EventRegistration.delete_registration(event, current_user.id, event.id)
+        return redirect(url_for('main.index'))
+    else:
+        flash('No estas registrado en este evento')
+

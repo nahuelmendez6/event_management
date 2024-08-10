@@ -1,5 +1,5 @@
 /* styles.css */
-
+/*
 body, html {
     margin: 0;
     padding: 0;
@@ -58,7 +58,148 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
+}
+*/
+
+/* Importando Bootstrap */
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+
+/* Estilos globales */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    display:flex;
+    flex-direction:column;
+    margin:0;
+    padding:0;
+}
+
+header {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1rem;
+}
+
+main {
+    flex:1;
+    height:100%;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav ul li {
+    margin-left: 1rem;
+}
+
+nav ul li a {
+    color: #000;
+    text-decoration: none;
+}
+
+
+
+footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    margin:0;
+    position:static;
+
+    width: 100%;
+}
+
+h1, h2 {
+    color: #343a40;
+    margin-bottom: 1rem;
+}
+
+form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+    margin-bottom: 1rem;
+}
+
+form span {
+    color: #dc3545;
+}
+
+button, input[type="submit"] {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+ul li {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul .username {
+    background-color:#343a40;
+    color:#fff;
+    margin-left:0;
+}
+
+.grid-events {
+    display:grid;
+    grid-gap:2rem;
+
+    height:100%;
+    padding:2rem;
+
+}
+
+.grid-item {
+    background-color:#343a40;
+    padding:2rem;
+    width:30%;
+    color:#fff;
+    border-radius:2rem;
+    text-align:center;
+}
+
+.grid-item:hover {
+    cursor:pointer;
+    transform:scale(0.95);
+}
+
+.grid-item a {
+    color:#fff;
+    text-decoration:none;
 }

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ event.title }}</h1>
+        <ul>
+            <li>{{ event.description }}</li>
+            <li>Inicio: {{ event.start_time }}</li>
+            <li>Fin: {{ event.end_time }}</li>
+            <li>Ubicación: {{ event.location }}</li>
+            <form action="{{ url_for('event.registration', event_id=event.id)}}" method="post">
+                <input type="submit" value="Inscribirse">
+            </form>
+            <form action="{{ url_for('event.cancel_registration', event_id=event.id)}}" method="post">
+                <input type="submit" value="Cancelar inscripción">
+            </form>
+        </ul>
+{% endblock %}
